@@ -16,7 +16,7 @@ contract BaseToken is ERC20 {
     
     string public name;
     string public symbol;
-    uint8 public decimals = 18;
+    uint8 public decimals = 8;
 
     uint256 public totalSupply;
 
