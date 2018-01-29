@@ -1,12 +1,12 @@
 pragma solidity ^0.4.18;
 
 contract ERC20 {
-      function totalSupply() constant returns (uint totalSupply);
-      function balanceOf(address _tokenOwner) constant returns (uint balance);
-      function allowance(address _tokenOwner, address _spender) constant returns (uint remaining);
-      function transfer(address _to, uint _value) returns (bool success);
-      function approve(address _spender, uint _value) returns (bool success);
-      function transferFrom(address _from, address _to, uint _value) returns (bool success);
+      function totalSupply() public constant returns (uint _totalSupply);
+      function balanceOf(address _tokenOwner) public constant returns (uint balance);
+      function allowance(address _tokenOwner, address _spender) public constant returns (uint remaining);
+      function transfer(address _to, uint _value) public returns (bool success);
+      function approve(address _spender, uint _value) public returns (bool success);
+      function transferFrom(address _from, address _to, uint _value) public returns (bool success);
 
       event Transfer(address indexed _from, address indexed _to, uint _value);
       event Approval(address indexed _owner, address indexed _spender, uint _value);
@@ -16,14 +16,14 @@ contract BaseToken is ERC20 {
     
     string public name;
     string public symbol;
-    uint8 public decimals = 8;
+    uint public decimals;
 
     uint256 public totalSupply;
 
     mapping (address => uint) public balances;
     mapping (address => mapping (address => uint256)) public allowances;
 
-    function totalSupply() public constant returns (uint totalSupply) {
+    function totalSupply() public constant returns (uint _totalSupply) {
         return totalSupply;
     }
 

@@ -16,11 +16,11 @@ contract Copyright {
         return copyright;
     }
 
-    function queryCopyright(bytes32 copyright) public returns (string info) {
+    function queryCopyright(bytes32 copyright) public view returns (string info) {
          return queryCopyrightByWriter(msg.sender,copyright);
     }
 
-    function queryCopyrightByWriter(address writer, bytes32 copyright) public returns (string info) {
+    function queryCopyrightByWriter(address writer, bytes32 copyright) public view returns (string info) {
         return copyrightInfo[writer][copyright];
     }
 
