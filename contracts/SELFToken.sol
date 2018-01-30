@@ -28,10 +28,9 @@ contract Owned {
 contract SELFToken is BaseToken, Copyright, Owned {
 
     struct LockedFund {
-        uint id;
         address holder;
-        uint256 step;
-        uint8 counter;
+        uint step;
+        uint counter;
         uint timer;
         uint timerStep;
     }
@@ -58,7 +57,7 @@ contract SELFToken is BaseToken, Copyright, Owned {
     function SELFToken() public {
         name = "SELFMediaToken";
         symbol = "SELFT1";
-        decimals = 2;
+        decimals = 0;
 
         uint256 hundredMillion = 10 ** (2 + decimals);
         uint256 million = 10 ** (1 + decimals);
@@ -71,55 +70,96 @@ contract SELFToken is BaseToken, Copyright, Owned {
 
         lockedFund = 50 * hundredMillion;
 
-        lockedFunds[0] = LockedFund({id: 1,holder: account2,step: 5 * hundredMillion,counter: 20,timer: now,timerStep: 10 minutes});
+        lockedFunds[0] = LockedFund({holder: account2,step: 5 * hundredMillion,counter: 20,timer: now,timerStep: 10 minutes});
 
-        lockedFunds[1] = LockedFund({id: 2,holder: account3,step: 64 * million,counter: 15,timer: now,timerStep: month});
+        lockedFunds[1] = LockedFund({holder: account3,step: 64 * million,counter: 15,timer: now,timerStep: month});
 
-        lockedFunds[2] = LockedFund({id: 3,holder: account4,step: 48 * million,counter: 15,timer: now,timerStep: month});
+        lockedFunds[2] = LockedFund({holder: account4,step: 48 * million,counter: 15,timer: now,timerStep: month});
 
-        lockedFunds[3] = LockedFund({id: 4,holder: account5,step: 56 * million,counter: 15,timer: now,timerStep: month});
+        lockedFunds[3] = LockedFund({holder: account5,step: 56 * million,counter: 15,timer: now,timerStep: month});
 
-        lockedFunds[4] = LockedFund({id: 5,holder: account6,step: 32 * million,counter: 15,timer: now,timerStep: month});
+        lockedFunds[4] = LockedFund({holder: account6,step: 32 * million,counter: 15,timer: now,timerStep: month});
 
-        lockedFunds[5] = LockedFund({id: 6,holder: account7,step: 32 * million,counter: 20,timer: now,timerStep: month});
+        lockedFunds[5] = LockedFund({holder: account7,step: 32 * million,counter: 20,timer: now,timerStep: month});
 
-        lockedFunds[6] = LockedFund({id: 7,holder: account8,step: 24 * million,counter: 20,timer: now,timerStep: month});
+        lockedFunds[6] = LockedFund({holder: account8,step: 24 * million,counter: 20,timer: now,timerStep: month});
 
-        lockedFunds[7] = LockedFund({id: 8,holder: account9,step: 28 * million,counter: 20,timer: now,timerStep: month});
+        lockedFunds[7] = LockedFund({holder: account9,step: 28 * million,counter: 20,timer: now,timerStep: month});
 
-        lockedFunds[8] = LockedFund({id: 9,holder: account10,step: 16 * million,counter: 20,timer: now,timerStep: month});
+        lockedFunds[8] = LockedFund({holder: account10,step: 16 * million,counter: 20,timer: now,timerStep: month});
     }
 
     function getLockedFund() public view returns (uint256 balance) {
         return lockedFund;
     }
 
-    function withdrawLockedBalance(uint id) public returns (bool success) {
+    function withdrawLockedFunds(uint index) public returns (bool success) {
 
-        LockedFund memory _lockedFund;
-        bool exised = false;
-        for (uint8 index = 0; index < lockedFunds.length; index++) {
-            if (id == lockedFunds[index].id) {
-                _lockedFund = lockedFunds[index];
-                exised = true;
-            }
-        }
+        require(index < 9 && lockedFund > 0);
 
-        require(exised && lockedFund > 0 && _lockedFund.counter > 0);
+        LockedFund storage _lockedFund = lockedFunds[index];
 
         uint timeElapsed = now - _lockedFund.timer;
 
-        require (timeElapsed >= _lockedFund.timerStep);
+        require (timeElapsed >= _lockedFund.timerStep && _lockedFund.counter > 0);
 
-        _lockedFund.timer = now;
-        _lockedFund.counter -= 1;
-        balances[_lockedFund.holder] += _lockedFund.step;
-        if (id == 1) {
-            totalSupply += _lockedFund.step;
+        uint remaining = _lockedFund.timerStep - (timeElapsed % _lockedFund.timerStep);
+
+        uint count = timeElapsed / _lockedFund.timerStep;
+
+        if (count > _lockedFund.counter) {
+            count = _lockedFund.counter;
+        }
+
+        uint fund = count * _lockedFund.step;
+
+        _lockedFund.timer = now - remaining;
+
+        _lockedFund.counter -= count;
+
+        balances[_lockedFund.holder] += fund;
+
+        if (index == 0) {
+            totalSupply += fund;
         } else {
-            lockedFund -= _lockedFund.step;
+            lockedFund -= fund;
         }
         
         return true;
+    }
+
+    function getRemainingTime(uint index) public view returns (uint time) {
+        require(index < 9);
+        uint timeElapsed = now - lockedFunds[index].timer;
+        if (timeElapsed >= lockedFunds[index].timerStep) {
+            return 0;
+        }
+        return lockedFunds[index].timerStep - timeElapsed; 
+    }
+
+    function getCanWithdrawLockedFunds(uint index) public view returns (uint funds) {
+        require(index < 9);
+        uint count = (now - lockedFunds[index].timer) / lockedFunds[index].timerStep;
+        return count * lockedFunds[index].step;
+    }
+
+    function getLockedFundsStep(uint index) public view returns (uint step) {
+        require(index < 9);
+        return lockedFunds[index].step;
+    }
+
+    function getLockedFundsTimer(uint index) public view returns (uint timer) {
+        require(index < 9);
+        return lockedFunds[index].timer;
+    }
+
+    function getLockedFundsTimeStep(uint index) public view returns (uint timerStep) {
+        require(index < 9);
+        return lockedFunds[index].timerStep;
+    }
+
+    function getLockedFundsCounter(uint index) public view returns (uint counter) {
+        require(index < 9);
+        return lockedFunds[index].counter;
     }
 }

@@ -5,14 +5,14 @@ contract("SELFToken",function(accounts){
 
     var self_token;
     var writer = accounts[0];
-    var copyright = 0x8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92;
-    var info = "hello world !";
+    var copyright = 0x001;
+    var version = 0x002;
 
     SELFToken.deployed(function(instance){
 
         self_token = instance;
-        console.log("record copyright: " + copyright + " info: " + info);
-        return self_token.recordCopyright(accounts[0],copyright,info);
+        console.log("record copyright: " + copyright + " version: " + version);
+        return self_token.recordCopyright(accounts[0],copyright,version);
 
     }).then(function(succee){
         
@@ -20,10 +20,10 @@ contract("SELFToken",function(accounts){
         console.log("query copyright: " + self_token);
         return self_token.queryCopyright.call(writer,copyright);
 
-    }).then(function(info){
+    }).then(function(version){
 
-        console.log("copyright info: " + info);
-
+        console.log("copyright version: " + version);
+        
     });
     
 });
