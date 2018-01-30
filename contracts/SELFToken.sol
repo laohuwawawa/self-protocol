@@ -36,7 +36,7 @@ contract SELFToken is BaseToken, Copyright, Owned {
         uint timerStep;
     }
 
-    uint256 public lockedBalance;
+    
 
     //foundation account.
     address account1 = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
@@ -52,6 +52,7 @@ contract SELFToken is BaseToken, Copyright, Owned {
     address account9 = 0x6330A553Fc93768F612722BB8c2eC78aC90B3bbc;
     address account10 = 0x5AEDA56215b167893e80B4fE645BA6d5Bab767DE;
 
+    uint256 public lockedBalance;
     LockedBalance[9] lockedBalances;
 
     uint month = 30 days;
@@ -59,16 +60,14 @@ contract SELFToken is BaseToken, Copyright, Owned {
     function SELFToken() public {
         name = "SELFMediaToken";
         symbol = "SELFT1";
-        decimals = 8;
+        decimals = 2;
 
-        uint256 hundredMillion = 10 ** (8 + decimals);
-        uint256 million = 10 ** (6 + decimals);
+        uint256 hundredMillion = 10 ** (2 + decimals);
+        uint256 million = 10 ** (1 + decimals);
 
         totalSupply = 100 * hundredMillion;
         balances[msg.sender] = totalSupply;
-
         
-
         balances[account1] = 40 * hundredMillion;
         balances[account2] = 10 * hundredMillion;
 

@@ -28,7 +28,7 @@ contract BaseToken is ERC20 {
     }
 
     function balanceOf(address _tokenOwner) public constant returns (uint balance) {
-        return balanceOf(_tokenOwner);
+        return balances[_tokenOwner];
     }
 
     function allowance(address _tokenOwner, address _spender) public constant returns (uint remaining) {
