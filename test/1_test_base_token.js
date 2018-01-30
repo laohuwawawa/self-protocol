@@ -2,9 +2,9 @@ var SELFToken = artifacts.require("SELFToken");
 
 contract('SELFToken', function (accounts) {
     console.log("--- start of base token function test ---");
-    console.log(accounts);
 
     var self_token;
+    var amount = 100;
 
     SELFToken.deployed().then(function (instance) {
 
@@ -18,19 +18,34 @@ contract('SELFToken', function (accounts) {
 
     }).then(function(balance){
 
-        console.log("account 1 balance : " + balance);
+        console.log("balance of account1 : " + balance);
         return self_token.balanceOf.call(accounts[1]);
 
     }).then(function(balance){
 
-        console.log("account 2 balance : " + balance);
+        console.log("balance of account2 : " + balance);
+        return self_token.balanceOf.call(accounts[2]);
+
+    }).then(function(balance){
+
+        console.log("balance of account3 : " + balance);
         return self_token.getOwner.call();
 
     }).then(function(owner){
 
         console.log("contract owner is " + owner);
+        console.log("send transation from account1 to account3 : value " + amount);
 
-        console.log("--- end of base token function test ---");
+        return self_token.transfer(accounts[2],amount);
+
+    }).then(function(success){
+
+        console.log("result of transation: " + success);
+        return self_token.balanceOf.call(accounts[2]);
+
+    }).then(function(balance){
+
+        console.log("balance of account3 : " + balance);
 
     });
 });

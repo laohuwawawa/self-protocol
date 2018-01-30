@@ -27,7 +27,7 @@ contract Owned {
 
 contract SELFToken is BaseToken, Copyright, Owned {
 
-    struct LockedBalance {
+    struct LockedFund {
         uint id;
         address holder;
         uint256 step;
@@ -35,8 +35,6 @@ contract SELFToken is BaseToken, Copyright, Owned {
         uint timer;
         uint timerStep;
     }
-
-    
 
     //foundation account.
     address account1 = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
@@ -52,10 +50,10 @@ contract SELFToken is BaseToken, Copyright, Owned {
     address account9 = 0x6330A553Fc93768F612722BB8c2eC78aC90B3bbc;
     address account10 = 0x5AEDA56215b167893e80B4fE645BA6d5Bab767DE;
 
-    uint256 public lockedBalance;
-    LockedBalance[9] lockedBalances;
+    uint256 public lockedFund;
+    LockedFund[9] lockedFunds;
 
-    uint month = 30 days;
+    uint month = 5 minutes;
     
     function SELFToken() public {
         name = "SELFMediaToken";
@@ -67,59 +65,59 @@ contract SELFToken is BaseToken, Copyright, Owned {
 
         totalSupply = 100 * hundredMillion;
         balances[msg.sender] = totalSupply;
-        
+
         balances[account1] = 40 * hundredMillion;
         balances[account2] = 10 * hundredMillion;
 
-        lockedBalance = 50 * hundredMillion;
+        lockedFund = 50 * hundredMillion;
 
-        lockedBalances[0] = LockedBalance({id: 1,holder: account2,step: 5 * hundredMillion,counter: 20,timer: now,timerStep: 1 years});
+        lockedFunds[0] = LockedFund({id: 1,holder: account2,step: 5 * hundredMillion,counter: 20,timer: now,timerStep: 10 minutes});
 
-        lockedBalances[1] = LockedBalance({id: 2,holder: account3,step: 64 * million,counter: 15,timer: now,timerStep: month});
+        lockedFunds[1] = LockedFund({id: 2,holder: account3,step: 64 * million,counter: 15,timer: now,timerStep: month});
 
-        lockedBalances[2] = LockedBalance({id: 3,holder: account4,step: 48 * million,counter: 15,timer: now,timerStep: month});
+        lockedFunds[2] = LockedFund({id: 3,holder: account4,step: 48 * million,counter: 15,timer: now,timerStep: month});
 
-        lockedBalances[3] = LockedBalance({id: 4,holder: account5,step: 56 * million,counter: 15,timer: now,timerStep: month});
+        lockedFunds[3] = LockedFund({id: 4,holder: account5,step: 56 * million,counter: 15,timer: now,timerStep: month});
 
-        lockedBalances[4] = LockedBalance({id: 5,holder: account6,step: 32 * million,counter: 15,timer: now,timerStep: month});
+        lockedFunds[4] = LockedFund({id: 5,holder: account6,step: 32 * million,counter: 15,timer: now,timerStep: month});
 
-        lockedBalances[5] = LockedBalance({id: 6,holder: account7,step: 32 * million,counter: 20,timer: now,timerStep: month});
+        lockedFunds[5] = LockedFund({id: 6,holder: account7,step: 32 * million,counter: 20,timer: now,timerStep: month});
 
-        lockedBalances[6] = LockedBalance({id: 7,holder: account8,step: 24 * million,counter: 20,timer: now,timerStep: month});
+        lockedFunds[6] = LockedFund({id: 7,holder: account8,step: 24 * million,counter: 20,timer: now,timerStep: month});
 
-        lockedBalances[7] = LockedBalance({id: 8,holder: account9,step: 28 * million,counter: 20,timer: now,timerStep: month});
+        lockedFunds[7] = LockedFund({id: 8,holder: account9,step: 28 * million,counter: 20,timer: now,timerStep: month});
 
-        lockedBalances[8] = LockedBalance({id: 9,holder: account10,step: 16 * million,counter: 20,timer: now,timerStep: month});
+        lockedFunds[8] = LockedFund({id: 9,holder: account10,step: 16 * million,counter: 20,timer: now,timerStep: month});
     }
 
-    function getLockedBalance() public view returns (uint256 balance) {
-        return lockedBalance;
+    function getLockedFund() public view returns (uint256 balance) {
+        return lockedFund;
     }
 
     function withdrawLockedBalance(uint id) public returns (bool success) {
 
-        LockedBalance memory _lockedBalance;
+        LockedFund memory _lockedFund;
         bool exised = false;
-        for (uint8 index = 0; index < lockedBalances.length; index++) {
-            if (id == lockedBalances[index].id) {
-                _lockedBalance = lockedBalances[index];
+        for (uint8 index = 0; index < lockedFunds.length; index++) {
+            if (id == lockedFunds[index].id) {
+                _lockedFund = lockedFunds[index];
                 exised = true;
             }
         }
 
-        require(exised && lockedBalance > 0 && _lockedBalance.counter > 0);
+        require(exised && lockedFund > 0 && _lockedFund.counter > 0);
 
-        uint timeElapsed = now - _lockedBalance.timer;
+        uint timeElapsed = now - _lockedFund.timer;
 
-        require (timeElapsed >= _lockedBalance.timerStep);
+        require (timeElapsed >= _lockedFund.timerStep);
 
-        _lockedBalance.timer = now;
-        _lockedBalance.counter -= 1;
-        balances[_lockedBalance.holder] += _lockedBalance.step;
+        _lockedFund.timer = now;
+        _lockedFund.counter -= 1;
+        balances[_lockedFund.holder] += _lockedFund.step;
         if (id == 1) {
-            totalSupply += _lockedBalance.step;
+            totalSupply += _lockedFund.step;
         } else {
-            lockedBalance -= _lockedBalance.step;
+            lockedFund -= _lockedFund.step;
         }
         
         return true;
