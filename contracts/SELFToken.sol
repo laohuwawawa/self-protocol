@@ -36,41 +36,40 @@ contract SELFToken is BaseToken, Copyright, Owned {
     }
 
     //foundation account.
-    address account1 = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
-    address account2 = 0xf17f52151EbEF6C7334FAD080c5704D77216b732;
+    address account1 = 0x426aAD46f8cfFC71D718a96EB3eD976bFF3F5378;
+    address account2 = 0x32245bc900a976288F6a40AD67d2D9a2Ec5ced8B;
 
     //other account.
-    address account3 = 0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef;
-    address account4 = 0x821aEa9a577a9b44299B9c15c88cf3087F3b5544;
-    address account5 = 0x0d1d4e623D10F9FBA5Db95830F7d3839406C6AF2;
-    address account6 = 0x2932b7A2355D6fecc4b5c0B6BD44cC31df247a2e;
-    address account7 = 0x2191eF87E392377ec08E7c08Eb105Ef5448eCED5;
-    address account8 = 0x0F4F2Ac550A1b4e2280d04c21cEa7EBD822934b5;
-    address account9 = 0x6330A553Fc93768F612722BB8c2eC78aC90B3bbc;
-    address account10 = 0x5AEDA56215b167893e80B4fE645BA6d5Bab767DE;
+    address account3 = 0x10164c10a8971157D073e7A351EA7De7D1288e09;
+    address account4 = 0x6Ab417178Ea81c28d782598675D34B818386CaD7;
+    address account5 = 0xbAb822450b4f98353c7Dc931Cd74cB1beCd28fc5;
+    address account6 = 0x46a2035A9EF77eD0A44a8F372EbbE09c75547345;
+
+    address account7 = 0x6aD98FA3c24996f2AB6436361D816516172080a8;
+    address account8 = 0x63996af1d882c79A6758Bc2766Ed4E2c315Ebffb;
+    address account9 = 0x3A40d96F304888dE11179239C63e8B6fdaff4572;
+    address account10 = 0xA7f36EACfD72355D488284da1c824358f7132E5C;
 
     uint256 public lockedFund;
     LockedFund[9] lockedFunds;
 
-    uint month = 5 minutes;
+    uint month = 30 days;
     
     function SELFToken() public {
-        name = "SELFMediaToken";
-        symbol = "SELFT1";
-        decimals = 0;
+        name = "SelfMediaToken";
+        symbol = "SELF";
+        decimals = 8;
 
-        uint256 hundredMillion = 10 ** (2 + decimals);
-        uint256 million = 10 ** (1 + decimals);
+        uint256 hundredMillion = 10 ** (8 + decimals);
+        uint256 million = 10 ** (6 + decimals);
 
         totalSupply = 100 * hundredMillion;
-        balances[msg.sender] = totalSupply;
+        lockedFund = 50 * hundredMillion;
 
         balances[account1] = 40 * hundredMillion;
         balances[account2] = 10 * hundredMillion;
 
-        lockedFund = 50 * hundredMillion;
-
-        lockedFunds[0] = LockedFund({holder: account2,step: 5 * hundredMillion,counter: 20,timer: now,timerStep: 10 minutes});
+        lockedFunds[0] = LockedFund({holder: account2,step: 5 * hundredMillion,counter: 20,timer: now,timerStep: 1 years});
 
         lockedFunds[1] = LockedFund({holder: account3,step: 64 * million,counter: 15,timer: now,timerStep: month});
 
@@ -95,7 +94,7 @@ contract SELFToken is BaseToken, Copyright, Owned {
 
     function withdrawLockedFunds(uint index) public returns (bool success) {
 
-        require(index < 9 && lockedFund > 0);
+        require(index < 9);
 
         LockedFund storage _lockedFund = lockedFunds[index];
 
