@@ -128,19 +128,9 @@ contract SELFToken is BaseToken, Copyright, Owned {
         return true;
     }
 
-    function getRemainingTime(uint index) public view returns (uint time) {
+    function getLockedFundsHolder(uint index) public view returns (address holder) {
         require(index < 9);
-        uint timeElapsed = now - lockedFunds[index].timer;
-        if (timeElapsed >= lockedFunds[index].timerStep) {
-            return 0;
-        }
-        return lockedFunds[index].timerStep - timeElapsed; 
-    }
-
-    function getCanWithdrawLockedFunds(uint index) public view returns (uint funds) {
-        require(index < 9);
-        uint count = (now - lockedFunds[index].timer) / lockedFunds[index].timerStep;
-        return count * lockedFunds[index].step;
+        return lockedFunds[index].holder;
     }
 
     function getLockedFundsStep(uint index) public view returns (uint step) {
