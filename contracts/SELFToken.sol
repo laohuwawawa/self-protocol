@@ -3,29 +3,7 @@ pragma solidity ^0.4.18;
 import "./BaseToken.sol";
 import "./Copyright.sol";
 
-contract Owned {
-
-    address public owner;
-
-    function Owned() public {
-        owner = msg.sender;
-    }
-
-    modifier onlyOwner {
-        require(msg.sender == owner);
-        _;
-    }
-
-    function getOwner() public view returns (address _owner) {
-        return owner;
-    }
-
-    function transferOwnership (address newOwner) onlyOwner public {
-        owner = newOwner;
-    }
-}
-
-contract SELFToken is BaseToken, Copyright, Owned {
+contract SELFToken is BaseToken, Copyright {
 
     struct LockedFund {
         address holder;
