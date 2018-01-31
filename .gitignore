@@ -1,1 +1,5 @@
 build
+node_modules
+bs-config.json
+package-lock.json
+package.json
