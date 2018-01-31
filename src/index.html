@@ -6,11 +6,49 @@
     <title>SELF Token Platform</title>
 </head>
 
-<body>
-    <div id="testRoot">
-        <p class="log">there for logs.</p>
+<body align="center">
+    <div>
+        <h1>SELF Token</h1>
+        <p>account code:</p>
+        <input id="input-code" type="text" value="0">
+        <br>
+        <br>
+        <button class="btn-holder" type="button">GetHolder</button>
+        <br>
+        <button class="btn-step" type="button">GetStep</button>
+        <br>
+        <button class="btn-timer" type="button">GetTimer</button>
+        <br>
+        <button class="btn-timerStep" type="button">GetTimerStep</button>
+        <br>
+        <button class="btn-counter" type="button">GetCounter</button>
+        <br>
+        <p>-------------------</p>
+        <button class="btn-withdraw" type="button">Withdraw</button>
     </div>
-    
+
+    <div>
+        <h1>Copyright</h1>
+        <p>from address:</p>
+        <input id="input-from-address" type="text">
+        <p>copyright code:</p>
+        <input id="input-copyright" type="text">
+        <br>
+        <br>
+        <button class="btn-queryCopyright" type="button">QueryCopyright</button>
+        <br>
+        <button class="btn-getManager" type="button">GetManager</button>
+    </div>
+
+    <div>
+        <h1>Transaction</h1>
+        <p>to address:</p>
+        <input id="input-to-address" type="text">
+        <p>amount:</p>
+        <input id="input-amount" type="text"><br><br>
+        <button class="btn-send" type="button">Send</button>
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="js/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>

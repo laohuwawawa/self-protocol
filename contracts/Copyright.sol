@@ -21,6 +21,10 @@ contract Copyright {
         return copyrightInfo[writer][copyright];
     }
 
+    function getManager() public view returns(address) {
+        return manager;
+    }
+
     function changeManager(address newManager) onlyManager public {
         manager = newManager;
     }
