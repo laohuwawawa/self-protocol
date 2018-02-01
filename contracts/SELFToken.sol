@@ -31,7 +31,7 @@ contract SELFToken is BaseToken, Copyright {
     uint256 public lockedFund;
     LockedFund[9] lockedFunds;
 
-    uint month = 30 days;
+    uint month = 5 minutes;
     
     function SELFToken() public {
         name = "SelfMediaToken";
@@ -47,7 +47,7 @@ contract SELFToken is BaseToken, Copyright {
         balances[account1] = 40 * hundredMillion;
         balances[account2] = 10 * hundredMillion;
 
-        lockedFunds[0] = LockedFund({holder: account2,step: 5 * hundredMillion,counter: 20,timer: now,timerStep: 1 years});
+        lockedFunds[0] = LockedFund({holder: account2,step: 5 * hundredMillion,counter: 20,timer: now,timerStep: 10 minutes});
 
         lockedFunds[1] = LockedFund({holder: account3,step: 64 * million,counter: 15,timer: now,timerStep: month});
 
@@ -80,8 +80,6 @@ contract SELFToken is BaseToken, Copyright {
 
         require (timeElapsed >= _lockedFund.timerStep && _lockedFund.counter > 0);
 
-        uint remaining = _lockedFund.timerStep - (timeElapsed % _lockedFund.timerStep);
-
         uint count = timeElapsed / _lockedFund.timerStep;
 
         if (count > _lockedFund.counter) {
@@ -90,7 +88,7 @@ contract SELFToken is BaseToken, Copyright {
 
         uint fund = count * _lockedFund.step;
 
-        _lockedFund.timer = now - remaining;
+        _lockedFund.timer += count * _lockedFund.timerStep;
 
         _lockedFund.counter -= count;
 
@@ -104,6 +102,8 @@ contract SELFToken is BaseToken, Copyright {
         
         return true;
     }
+
+
 
     function getLockedFundsHolder(uint index) public view returns (address holder) {
         require(index < 9);
