@@ -1,3 +1,5 @@
+var HDWalletProvider = require("truffle-hdwallet-provider");
+var mnemonic = "debris maximum chalk tower latin pole degree churn middle era refuse regret";
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // to customize your Truffle configuration!
@@ -8,8 +10,9 @@ module.exports = {
       network_id: "*" // Match any network id
     },
     ropsten: {
-      host: "localhost",
-      port: 8545,
+      provider: function() {
+        return new HDWalletProvider(mnemonic,"https://ropsten.infura.io/4RgiPxJdONP7pk1PNmpW");
+      },
       network_id: 3,
       gas: 4000000
     }

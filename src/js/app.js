@@ -140,8 +140,8 @@ App = {
     },
 
     handleQueryCopyright: function (event) {
-        var address = parseInt($('#input-from-address').val());
-        var code = parseInt($('input-copyright').val());
+        var address = $('#input-from-address').val();
+        var code = $('input-copyright').val();
 
         App.contracts.SELFToken.deployed().then(function (instance) {
             return instance.queryCopyright(address, code);
@@ -159,8 +159,8 @@ App = {
     },
 
     handleTransaction: function (event) {
-        var address = parseInt($('#input-to-address').val());
-        var amount = parseInt($('#input-amount').val());
+        var address = $('#input-to-address').val();
+        var amount = $('#input-amount').val();
 
         web3.eth.getAccounts(function (err, accounts) {
             if(err){
